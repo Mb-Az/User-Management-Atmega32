@@ -1,0 +1,1306 @@
+
+GccApplication1.elf:     file format elf32-avr
+
+Sections:
+Idx Name          Size      VMA       LMA       File off  Algn
+  0 .text         000005a4  00000000  00000000  00000074  2**1
+                  CONTENTS, ALLOC, LOAD, READONLY, CODE
+  1 .data         00000000  00800060  00800060  00000618  2**0
+                  CONTENTS, ALLOC, LOAD, DATA
+  2 .bss          00000004  00800060  00800060  00000618  2**0
+                  ALLOC
+  3 .comment      00000030  00000000  00000000  00000618  2**0
+                  CONTENTS, READONLY
+  4 .note.gnu.avr.deviceinfo 0000003c  00000000  00000000  00000648  2**2
+                  CONTENTS, READONLY
+  5 .debug_aranges 00000048  00000000  00000000  00000684  2**0
+                  CONTENTS, READONLY, DEBUGGING
+  6 .debug_info   000009fe  00000000  00000000  000006cc  2**0
+                  CONTENTS, READONLY, DEBUGGING
+  7 .debug_abbrev 0000069f  00000000  00000000  000010ca  2**0
+                  CONTENTS, READONLY, DEBUGGING
+  8 .debug_line   000006c3  00000000  00000000  00001769  2**0
+                  CONTENTS, READONLY, DEBUGGING
+  9 .debug_frame  000000cc  00000000  00000000  00001e2c  2**2
+                  CONTENTS, READONLY, DEBUGGING
+ 10 .debug_str    00000430  00000000  00000000  00001ef8  2**0
+                  CONTENTS, READONLY, DEBUGGING
+ 11 .debug_loc    00000b21  00000000  00000000  00002328  2**0
+                  CONTENTS, READONLY, DEBUGGING
+ 12 .debug_ranges 00000078  00000000  00000000  00002e49  2**0
+                  CONTENTS, READONLY, DEBUGGING
+
+Disassembly of section .text:
+
+00000000 <__vectors>:
+   0:	0c 94 2a 00 	jmp	0x54	; 0x54 <__ctors_end>
+   4:	0c 94 3c 00 	jmp	0x78	; 0x78 <__bad_interrupt>
+   8:	0c 94 3c 00 	jmp	0x78	; 0x78 <__bad_interrupt>
+   c:	0c 94 3c 00 	jmp	0x78	; 0x78 <__bad_interrupt>
+  10:	0c 94 3c 00 	jmp	0x78	; 0x78 <__bad_interrupt>
+  14:	0c 94 3c 00 	jmp	0x78	; 0x78 <__bad_interrupt>
+  18:	0c 94 3c 00 	jmp	0x78	; 0x78 <__bad_interrupt>
+  1c:	0c 94 3c 00 	jmp	0x78	; 0x78 <__bad_interrupt>
+  20:	0c 94 3c 00 	jmp	0x78	; 0x78 <__bad_interrupt>
+  24:	0c 94 3c 00 	jmp	0x78	; 0x78 <__bad_interrupt>
+  28:	0c 94 3c 00 	jmp	0x78	; 0x78 <__bad_interrupt>
+  2c:	0c 94 8f 00 	jmp	0x11e	; 0x11e <__vector_11>
+  30:	0c 94 3c 00 	jmp	0x78	; 0x78 <__bad_interrupt>
+  34:	0c 94 3c 00 	jmp	0x78	; 0x78 <__bad_interrupt>
+  38:	0c 94 3c 00 	jmp	0x78	; 0x78 <__bad_interrupt>
+  3c:	0c 94 3c 00 	jmp	0x78	; 0x78 <__bad_interrupt>
+  40:	0c 94 3c 00 	jmp	0x78	; 0x78 <__bad_interrupt>
+  44:	0c 94 3c 00 	jmp	0x78	; 0x78 <__bad_interrupt>
+  48:	0c 94 3c 00 	jmp	0x78	; 0x78 <__bad_interrupt>
+  4c:	0c 94 3c 00 	jmp	0x78	; 0x78 <__bad_interrupt>
+  50:	0c 94 3c 00 	jmp	0x78	; 0x78 <__bad_interrupt>
+
+00000054 <__ctors_end>:
+  54:	11 24       	eor	r1, r1
+  56:	1f be       	out	0x3f, r1	; 63
+  58:	cf e5       	ldi	r28, 0x5F	; 95
+  5a:	d8 e0       	ldi	r29, 0x08	; 8
+  5c:	de bf       	out	0x3e, r29	; 62
+  5e:	cd bf       	out	0x3d, r28	; 61
+
+00000060 <__do_clear_bss>:
+  60:	20 e0       	ldi	r18, 0x00	; 0
+  62:	a0 e6       	ldi	r26, 0x60	; 96
+  64:	b0 e0       	ldi	r27, 0x00	; 0
+  66:	01 c0       	rjmp	.+2      	; 0x6a <.do_clear_bss_start>
+
+00000068 <.do_clear_bss_loop>:
+  68:	1d 92       	st	X+, r1
+
+0000006a <.do_clear_bss_start>:
+  6a:	a4 36       	cpi	r26, 0x64	; 100
+  6c:	b2 07       	cpc	r27, r18
+  6e:	e1 f7       	brne	.-8      	; 0x68 <.do_clear_bss_loop>
+  70:	0e 94 04 01 	call	0x208	; 0x208 <main>
+  74:	0c 94 d0 02 	jmp	0x5a0	; 0x5a0 <_exit>
+
+00000078 <__bad_interrupt>:
+  78:	0c 94 00 00 	jmp	0	; 0x0 <__vectors>
+
+0000007c <time_corrector>:
+
+volatile uint8_t con = 0;
+
+//convert time to an BCD representation
+int time_corrector(int timer){
+	if (timer % 16 >= 10){
+  7c:	9c 01       	movw	r18, r24
+  7e:	2f 70       	andi	r18, 0x0F	; 15
+  80:	30 78       	andi	r19, 0x80	; 128
+  82:	33 23       	and	r19, r19
+  84:	34 f4       	brge	.+12     	; 0x92 <time_corrector+0x16>
+  86:	21 50       	subi	r18, 0x01	; 1
+  88:	31 09       	sbc	r19, r1
+  8a:	20 6f       	ori	r18, 0xF0	; 240
+  8c:	3f 6f       	ori	r19, 0xFF	; 255
+  8e:	2f 5f       	subi	r18, 0xFF	; 255
+  90:	3f 4f       	sbci	r19, 0xFF	; 255
+  92:	2a 30       	cpi	r18, 0x0A	; 10
+  94:	31 05       	cpc	r19, r1
+  96:	3c f0       	brlt	.+14     	; 0xa6 <time_corrector+0x2a>
+		return ((timer + 6)/16 << 4) ;
+  98:	06 96       	adiw	r24, 0x06	; 6
+  9a:	9c 01       	movw	r18, r24
+  9c:	12 f4       	brpl	.+4      	; 0xa2 <time_corrector+0x26>
+  9e:	21 5f       	subi	r18, 0xF1	; 241
+  a0:	3f 4f       	sbci	r19, 0xFF	; 255
+  a2:	c9 01       	movw	r24, r18
+  a4:	80 7f       	andi	r24, 0xF0	; 240
+	}
+	else
+	return timer;
+}
+  a6:	08 95       	ret
+
+000000a8 <add_second>:
+
+
+void add_second()
+{	
+	seconds ++;
+  a8:	80 91 63 00 	lds	r24, 0x0063	; 0x800063 <seconds>
+  ac:	8f 5f       	subi	r24, 0xFF	; 255
+  ae:	80 93 63 00 	sts	0x0063, r24	; 0x800063 <seconds>
+	seconds = time_corrector(seconds);
+  b2:	80 91 63 00 	lds	r24, 0x0063	; 0x800063 <seconds>
+  b6:	90 e0       	ldi	r25, 0x00	; 0
+  b8:	0e 94 3e 00 	call	0x7c	; 0x7c <time_corrector>
+  bc:	80 93 63 00 	sts	0x0063, r24	; 0x800063 <seconds>
+	if (seconds == 96){
+  c0:	80 91 63 00 	lds	r24, 0x0063	; 0x800063 <seconds>
+  c4:	80 36       	cpi	r24, 0x60	; 96
+  c6:	51 f5       	brne	.+84     	; 0x11c <add_second+0x74>
+		seconds = 0;
+  c8:	10 92 63 00 	sts	0x0063, r1	; 0x800063 <seconds>
+		minutes = minutes + 1;
+  cc:	80 91 62 00 	lds	r24, 0x0062	; 0x800062 <minutes>
+  d0:	8f 5f       	subi	r24, 0xFF	; 255
+  d2:	80 93 62 00 	sts	0x0062, r24	; 0x800062 <minutes>
+		minutes = time_corrector(minutes);
+  d6:	80 91 62 00 	lds	r24, 0x0062	; 0x800062 <minutes>
+  da:	90 e0       	ldi	r25, 0x00	; 0
+  dc:	0e 94 3e 00 	call	0x7c	; 0x7c <time_corrector>
+  e0:	80 93 62 00 	sts	0x0062, r24	; 0x800062 <minutes>
+		if (minutes == 96){
+  e4:	80 91 62 00 	lds	r24, 0x0062	; 0x800062 <minutes>
+  e8:	80 36       	cpi	r24, 0x60	; 96
+  ea:	c1 f4       	brne	.+48     	; 0x11c <add_second+0x74>
+			minutes = 0;
+  ec:	10 92 62 00 	sts	0x0062, r1	; 0x800062 <minutes>
+			hours = hours + 1;
+  f0:	80 91 61 00 	lds	r24, 0x0061	; 0x800061 <hours>
+  f4:	8f 5f       	subi	r24, 0xFF	; 255
+  f6:	80 93 61 00 	sts	0x0061, r24	; 0x800061 <hours>
+			hours = time_corrector(hours);
+  fa:	80 91 61 00 	lds	r24, 0x0061	; 0x800061 <hours>
+  fe:	90 e0       	ldi	r25, 0x00	; 0
+ 100:	0e 94 3e 00 	call	0x7c	; 0x7c <time_corrector>
+ 104:	80 93 61 00 	sts	0x0061, r24	; 0x800061 <hours>
+			if (hours == 36){
+ 108:	80 91 61 00 	lds	r24, 0x0061	; 0x800061 <hours>
+ 10c:	84 32       	cpi	r24, 0x24	; 36
+ 10e:	31 f4       	brne	.+12     	; 0x11c <add_second+0x74>
+				hours = 0;
+ 110:	10 92 61 00 	sts	0x0061, r1	; 0x800061 <hours>
+				minutes = 0;
+ 114:	10 92 62 00 	sts	0x0062, r1	; 0x800062 <minutes>
+				seconds = 0;
+ 118:	10 92 63 00 	sts	0x0063, r1	; 0x800063 <seconds>
+ 11c:	08 95       	ret
+
+0000011e <__vector_11>:
+	}
+}
+
+// timer0 overflow
+ISR(TIMER0_OVF_vect)
+{
+ 11e:	1f 92       	push	r1
+ 120:	0f 92       	push	r0
+ 122:	0f b6       	in	r0, 0x3f	; 63
+ 124:	0f 92       	push	r0
+ 126:	11 24       	eor	r1, r1
+ 128:	2f 93       	push	r18
+ 12a:	3f 93       	push	r19
+ 12c:	4f 93       	push	r20
+ 12e:	5f 93       	push	r21
+ 130:	6f 93       	push	r22
+ 132:	7f 93       	push	r23
+ 134:	8f 93       	push	r24
+ 136:	9f 93       	push	r25
+ 138:	af 93       	push	r26
+ 13a:	bf 93       	push	r27
+ 13c:	ef 93       	push	r30
+ 13e:	ff 93       	push	r31
+	TCNT0=START;
+ 140:	12 be       	out	0x32, r1	; 50
+	con ++;
+ 142:	80 91 60 00 	lds	r24, 0x0060	; 0x800060 <_edata>
+ 146:	8f 5f       	subi	r24, 0xFF	; 255
+ 148:	80 93 60 00 	sts	0x0060, r24	; 0x800060 <_edata>
+	if (con >= THRESHOLD)
+ 14c:	80 91 60 00 	lds	r24, 0x0060	; 0x800060 <_edata>
+ 150:	88 23       	and	r24, r24
+ 152:	21 f0       	breq	.+8      	; 0x15c <__vector_11+0x3e>
+	{
+		con = 0;
+ 154:	10 92 60 00 	sts	0x0060, r1	; 0x800060 <_edata>
+		add_second();
+ 158:	0e 94 54 00 	call	0xa8	; 0xa8 <add_second>
+	}
+
+}
+ 15c:	ff 91       	pop	r31
+ 15e:	ef 91       	pop	r30
+ 160:	bf 91       	pop	r27
+ 162:	af 91       	pop	r26
+ 164:	9f 91       	pop	r25
+ 166:	8f 91       	pop	r24
+ 168:	7f 91       	pop	r23
+ 16a:	6f 91       	pop	r22
+ 16c:	5f 91       	pop	r21
+ 16e:	4f 91       	pop	r20
+ 170:	3f 91       	pop	r19
+ 172:	2f 91       	pop	r18
+ 174:	0f 90       	pop	r0
+ 176:	0f be       	out	0x3f, r0	; 63
+ 178:	0f 90       	pop	r0
+ 17a:	1f 90       	pop	r1
+ 17c:	18 95       	reti
+
+0000017e <GetKeyPressed>:
+
+//convert keypad to number
+uint8_t GetKeyPressed(){
+	uint8_t r,c, number;
+
+	KEYPAD_PORT|= 0X0F;  //0F
+ 17e:	88 b3       	in	r24, 0x18	; 24
+ 180:	8f 60       	ori	r24, 0x0F	; 15
+ 182:	88 bb       	out	0x18, r24	; 24
+ 184:	20 e0       	ldi	r18, 0x00	; 0
+ 186:	30 e0       	ldi	r19, 0x00	; 0
+	
+	for(c=0;c<3;c++)
+	{
+		KEYPAD_DDR&=~(0X7F);
+
+		KEYPAD_DDR|=(0X40>>c);
+ 188:	e0 e4       	ldi	r30, 0x40	; 64
+ 18a:	f0 e0       	ldi	r31, 0x00	; 0
+ 18c:	82 2f       	mov	r24, r18
+
+	KEYPAD_PORT|= 0X0F;  //0F
+	
+	for(c=0;c<3;c++)
+	{
+		KEYPAD_DDR&=~(0X7F);
+ 18e:	97 b3       	in	r25, 0x17	; 23
+ 190:	90 78       	andi	r25, 0x80	; 128
+ 192:	97 bb       	out	0x17, r25	; 23
+
+		KEYPAD_DDR|=(0X40>>c);
+ 194:	67 b3       	in	r22, 0x17	; 23
+ 196:	af 01       	movw	r20, r30
+ 198:	02 2e       	mov	r0, r18
+ 19a:	02 c0       	rjmp	.+4      	; 0x1a0 <GetKeyPressed+0x22>
+ 19c:	55 95       	asr	r21
+ 19e:	47 95       	ror	r20
+ 1a0:	0a 94       	dec	r0
+ 1a2:	e2 f7       	brpl	.-8      	; 0x19c <GetKeyPressed+0x1e>
+ 1a4:	46 2b       	or	r20, r22
+ 1a6:	47 bb       	out	0x17, r20	; 23
+		for(r=0;r<4;r++)
+		{
+			if(!(KEYPAD_PIN & (0X08>>r)))
+ 1a8:	b3 9b       	sbis	0x16, 3	; 22
+ 1aa:	0c c0       	rjmp	.+24     	; 0x1c4 <GetKeyPressed+0x46>
+ 1ac:	b2 9b       	sbis	0x16, 2	; 22
+ 1ae:	06 c0       	rjmp	.+12     	; 0x1bc <GetKeyPressed+0x3e>
+ 1b0:	b1 9b       	sbis	0x16, 1	; 22
+ 1b2:	06 c0       	rjmp	.+12     	; 0x1c0 <GetKeyPressed+0x42>
+ 1b4:	b0 99       	sbic	0x16, 0	; 22
+ 1b6:	0f c0       	rjmp	.+30     	; 0x1d6 <GetKeyPressed+0x58>
+	for(c=0;c<3;c++)
+	{
+		KEYPAD_DDR&=~(0X7F);
+
+		KEYPAD_DDR|=(0X40>>c);
+		for(r=0;r<4;r++)
+ 1b8:	93 e0       	ldi	r25, 0x03	; 3
+ 1ba:	05 c0       	rjmp	.+10     	; 0x1c6 <GetKeyPressed+0x48>
+ 1bc:	91 e0       	ldi	r25, 0x01	; 1
+ 1be:	03 c0       	rjmp	.+6      	; 0x1c6 <GetKeyPressed+0x48>
+ 1c0:	92 e0       	ldi	r25, 0x02	; 2
+ 1c2:	01 c0       	rjmp	.+2      	; 0x1c6 <GetKeyPressed+0x48>
+ 1c4:	90 e0       	ldi	r25, 0x00	; 0
+		{
+			if(!(KEYPAD_PIN & (0X08>>r)))
+			{
+				number = (r*3+c) + 1;
+ 1c6:	8f 5f       	subi	r24, 0xFF	; 255
+ 1c8:	29 2f       	mov	r18, r25
+ 1ca:	22 0f       	add	r18, r18
+ 1cc:	92 0f       	add	r25, r18
+ 1ce:	89 0f       	add	r24, r25
+				if (number==0x0B)
+ 1d0:	8b 30       	cpi	r24, 0x0B	; 11
+ 1d2:	41 f0       	breq	.+16     	; 0x1e4 <GetKeyPressed+0x66>
+ 1d4:	08 95       	ret
+ 1d6:	2f 5f       	subi	r18, 0xFF	; 255
+ 1d8:	3f 4f       	sbci	r19, 0xFF	; 255
+uint8_t GetKeyPressed(){
+	uint8_t r,c, number;
+
+	KEYPAD_PORT|= 0X0F;  //0F
+	
+	for(c=0;c<3;c++)
+ 1da:	23 30       	cpi	r18, 0x03	; 3
+ 1dc:	31 05       	cpc	r19, r1
+ 1de:	b1 f6       	brne	.-84     	; 0x18c <GetKeyPressed+0xe>
+				return number;
+			}
+		}
+	}
+
+	return 0XFF;//Indicate No key pressed
+ 1e0:	8f ef       	ldi	r24, 0xFF	; 255
+ 1e2:	08 95       	ret
+		{
+			if(!(KEYPAD_PIN & (0X08>>r)))
+			{
+				number = (r*3+c) + 1;
+				if (number==0x0B)
+				return 0x00;
+ 1e4:	80 e0       	ldi	r24, 0x00	; 0
+			}
+		}
+	}
+
+	return 0XFF;//Indicate No key pressed
+}
+ 1e6:	08 95       	ret
+
+000001e8 <show_error>:
+
+//blinking LED
+void show_error()
+{
+	PORTA = 0;
+ 1e8:	1b ba       	out	0x1b, r1	; 27
+	PORTC = 0;
+ 1ea:	15 ba       	out	0x15, r1	; 21
+	PORTD = 0;
+ 1ec:	12 ba       	out	0x12, r1	; 18
+ 1ee:	96 e0       	ldi	r25, 0x06	; 6
+	for (uint8_t i=0; i< 6; i++)
+	{
+		PORTB ^= 1<<7;
+ 1f0:	88 b3       	in	r24, 0x18	; 24
+ 1f2:	80 58       	subi	r24, 0x80	; 128
+ 1f4:	88 bb       	out	0x18, r24	; 24
+	#else
+		//round up by default
+		__ticks_dc = (uint32_t)(ceil(fabs(__tmp)));
+	#endif
+
+	__builtin_avr_delay_cycles(__ticks_dc);
+ 1f6:	ed e3       	ldi	r30, 0x3D	; 61
+ 1f8:	f9 e4       	ldi	r31, 0x49	; 73
+ 1fa:	31 97       	sbiw	r30, 0x01	; 1
+ 1fc:	f1 f7       	brne	.-4      	; 0x1fa <show_error+0x12>
+ 1fe:	00 c0       	rjmp	.+0      	; 0x200 <show_error+0x18>
+ 200:	00 00       	nop
+ 202:	91 50       	subi	r25, 0x01	; 1
+void show_error()
+{
+	PORTA = 0;
+	PORTC = 0;
+	PORTD = 0;
+	for (uint8_t i=0; i< 6; i++)
+ 204:	a9 f7       	brne	.-22     	; 0x1f0 <show_error+0x8>
+	{
+		PORTB ^= 1<<7;
+		_delay_ms(75);	
+	}
+}
+ 206:	08 95       	ret
+
+00000208 <main>:
+
+// ********************************************************************************
+// Main
+// ********************************************************************************
+int main( void ) {
+ 208:	cf 93       	push	r28
+ 20a:	df 93       	push	r29
+ 20c:	cd b7       	in	r28, 0x3d	; 61
+ 20e:	de b7       	in	r29, 0x3e	; 62
+ 210:	ac 97       	sbiw	r28, 0x2c	; 44
+ 212:	0f b6       	in	r0, 0x3f	; 63
+ 214:	f8 94       	cli
+ 216:	de bf       	out	0x3e, r29	; 62
+ 218:	0f be       	out	0x3f, r0	; 63
+ 21a:	cd bf       	out	0x3d, r28	; 61
+	DDRA = 0xFF;			/* Making all 8 pins of Port A as output pins */
+ 21c:	8f ef       	ldi	r24, 0xFF	; 255
+ 21e:	8a bb       	out	0x1a, r24	; 26
+	DDRC = 0xFF;			/* Making all 8 pins of Port C as output pins */
+ 220:	84 bb       	out	0x14, r24	; 20
+	DDRD = 0xFF;			/* Making all 8 pins of Port D as output pins */
+ 222:	81 bb       	out	0x11, r24	; 17
+	DDRB |= 1<<7;			/* Making pin7 of Port B as output pins */
+ 224:	bf 9a       	sbi	0x17, 7	; 23
+	
+	uint8_t pressed = 0;
+	uint8_t key;
+	uint8_t indexEnteredPass = 0;
+	uint8_t last_inputed_char = EMPTY;
+	uint8_t logins[ACCOUNT_COUNT][4] = {{0,0,0,0},{0,0,0,0}};
+ 226:	84 e1       	ldi	r24, 0x14	; 20
+ 228:	fe 01       	movw	r30, r28
+ 22a:	31 96       	adiw	r30, 0x01	; 1
+ 22c:	df 01       	movw	r26, r30
+ 22e:	28 2f       	mov	r18, r24
+ 230:	1d 92       	st	X+, r1
+ 232:	2a 95       	dec	r18
+ 234:	e9 f7       	brne	.-6      	; 0x230 <main+0x28>
+	uint8_t passwords[ACCOUNT_COUNT][4] = {{1,2,3,4},{1,3,5,7}};
+ 236:	74 96       	adiw	r30, 0x14	; 20
+ 238:	df 01       	movw	r26, r30
+ 23a:	1d 92       	st	X+, r1
+ 23c:	8a 95       	dec	r24
+ 23e:	e9 f7       	brne	.-6      	; 0x23a <main+0x32>
+ 240:	81 e0       	ldi	r24, 0x01	; 1
+ 242:	8d 8b       	std	Y+21, r24	; 0x15
+ 244:	92 e0       	ldi	r25, 0x02	; 2
+ 246:	9e 8b       	std	Y+22, r25	; 0x16
+ 248:	93 e0       	ldi	r25, 0x03	; 3
+ 24a:	9f 8b       	std	Y+23, r25	; 0x17
+ 24c:	24 e0       	ldi	r18, 0x04	; 4
+ 24e:	28 8f       	std	Y+24, r18	; 0x18
+ 250:	89 8f       	std	Y+25, r24	; 0x19
+ 252:	9a 8f       	std	Y+26, r25	; 0x1a
+ 254:	95 e0       	ldi	r25, 0x05	; 5
+ 256:	9b 8f       	std	Y+27, r25	; 0x1b
+ 258:	97 e0       	ldi	r25, 0x07	; 7
+ 25a:	9c 8f       	std	Y+28, r25	; 0x1c
+	uint8_t isPasswordTrue;
+	uint8_t entered_password[] = {EMPTY,EMPTY,EMPTY,EMPTY};
+ 25c:	9f e0       	ldi	r25, 0x0F	; 15
+ 25e:	99 a7       	std	Y+41, r25	; 0x29
+ 260:	9a a7       	std	Y+42, r25	; 0x2a
+ 262:	9b a7       	std	Y+43, r25	; 0x2b
+ 264:	9c a7       	std	Y+44, r25	; 0x2c
+	uint8_t log_out = 0;
+	uint8_t pb7 = 0;
+	
+	
+	// enable timer overflow interrupt for both Timer0 and Timer1
+	TIMSK=(1<<TOIE0);
+ 266:	89 bf       	out	0x39, r24	; 57
+	// set timer0 counter initial value to 0
+	TCNT0=START;
+ 268:	12 be       	out	0x32, r1	; 50
+	// start timer0 with /1024 prescaler
+	TCCR0=  PRESCALE;
+ 26a:	83 bf       	out	0x33, r24	; 51
+	
+	sei(); //enable interupts
+ 26c:	78 94       	sei
+	uint8_t addPassword = 0;
+	uint8_t accountCounts = 2;
+	
+	uint8_t logged_user = 0;
+	uint8_t log_out = 0;
+	uint8_t pb7 = 0;
+ 26e:	c1 2c       	mov	r12, r1
+	uint8_t logins[ACCOUNT_COUNT][4] = {{0,0,0,0},{0,0,0,0}};
+	uint8_t passwords[ACCOUNT_COUNT][4] = {{1,2,3,4},{1,3,5,7}};
+	uint8_t isPasswordTrue;
+	uint8_t entered_password[] = {EMPTY,EMPTY,EMPTY,EMPTY};
+	uint8_t addPassword = 0;
+	uint8_t accountCounts = 2;
+ 270:	68 94       	set
+ 272:	ff 24       	eor	r15, r15
+ 274:	f1 f8       	bld	r15, 1
+	uint8_t last_inputed_char = EMPTY;
+	uint8_t logins[ACCOUNT_COUNT][4] = {{0,0,0,0},{0,0,0,0}};
+	uint8_t passwords[ACCOUNT_COUNT][4] = {{1,2,3,4},{1,3,5,7}};
+	uint8_t isPasswordTrue;
+	uint8_t entered_password[] = {EMPTY,EMPTY,EMPTY,EMPTY};
+	uint8_t addPassword = 0;
+ 276:	a1 2c       	mov	r10, r1
+	DDRB |= 1<<7;			/* Making pin7 of Port B as output pins */
+	
+	uint8_t pressed = 0;
+	uint8_t key;
+	uint8_t indexEnteredPass = 0;
+	uint8_t last_inputed_char = EMPTY;
+ 278:	0f 2e       	mov	r0, r31
+ 27a:	ff e0       	ldi	r31, 0x0F	; 15
+ 27c:	5f 2e       	mov	r5, r31
+ 27e:	f0 2d       	mov	r31, r0
+	DDRD = 0xFF;			/* Making all 8 pins of Port D as output pins */
+	DDRB |= 1<<7;			/* Making pin7 of Port B as output pins */
+	
+	uint8_t pressed = 0;
+	uint8_t key;
+	uint8_t indexEnteredPass = 0;
+ 280:	61 2c       	mov	r6, r1
+	DDRA = 0xFF;			/* Making all 8 pins of Port A as output pins */
+	DDRC = 0xFF;			/* Making all 8 pins of Port C as output pins */
+	DDRD = 0xFF;			/* Making all 8 pins of Port D as output pins */
+	DDRB |= 1<<7;			/* Making pin7 of Port B as output pins */
+	
+	uint8_t pressed = 0;
+ 282:	31 2c       	mov	r3, r1
+		if (key == 0xFF )
+		{
+			pressed = 0;
+		}
+		if(key!=0xFF && pressed == 0){
+			pressed = 1;
+ 284:	dd 24       	eor	r13, r13
+ 286:	d3 94       	inc	r13
+				}
+				//wait and set back everything
+				_delay_ms(500);
+				last_inputed_char = EMPTY;
+				indexEnteredPass = 0;
+				entered_password[0] = EMPTY;
+ 288:	0f 2e       	mov	r0, r31
+ 28a:	ff e0       	ldi	r31, 0x0F	; 15
+ 28c:	ef 2e       	mov	r14, r31
+ 28e:	f0 2d       	mov	r31, r0
+ 290:	8e 01       	movw	r16, r28
+ 292:	03 5d       	subi	r16, 0xD3	; 211
+ 294:	1f 4f       	sbci	r17, 0xFF	; 255
+					{
+						passwords[accountCounts][j] = entered_password[j];
+						logins[accountCounts][j] = 0;
+					}
+					accountCounts++;
+					addPassword = 0;
+ 296:	b1 2c       	mov	r11, r1
+				{
+					PORTD = 0xAD;
+				}
+				else 
+				{
+					PORTD = 0xCD;
+ 298:	0f 2e       	mov	r0, r31
+ 29a:	fd ec       	ldi	r31, 0xCD	; 205
+ 29c:	9f 2e       	mov	r9, r31
+ 29e:	f0 2d       	mov	r31, r0
+				{
+					last_inputed_char = EMPTY;
+					for (uint8_t j=0;j<accountCounts;j++)
+					{
+						PORTA = j+1;
+						PORTC = 0xAC;
+ 2a0:	0f 2e       	mov	r0, r31
+ 2a2:	fc ea       	ldi	r31, 0xAC	; 172
+ 2a4:	7f 2e       	mov	r7, r31
+ 2a6:	f0 2d       	mov	r31, r0
+						PORTD = 0xCC;
+ 2a8:	0f 2e       	mov	r0, r31
+ 2aa:	fc ec       	ldi	r31, 0xCC	; 204
+ 2ac:	8f 2e       	mov	r8, r31
+ 2ae:	f0 2d       	mov	r31, r0
+ 2b0:	04 c0       	rjmp	.+8      	; 0x2ba <main+0xb2>
+		}
+
+		key=GetKeyPressed();
+		if (key == 0xFF )
+		{
+			pressed = 0;
+ 2b2:	3b 2c       	mov	r3, r11
+ 2b4:	02 c0       	rjmp	.+4      	; 0x2ba <main+0xb2>
+ 2b6:	58 2e       	mov	r5, r24
+		}
+		if(key!=0xFF && pressed == 0){
+			pressed = 1;
+ 2b8:	3d 2c       	mov	r3, r13
+	TCCR0=  PRESCALE;
+	
+	sei(); //enable interupts
+	
+	while(1) {
+		if(last_inputed_char == EMPTY)
+ 2ba:	bf e0       	ldi	r27, 0x0F	; 15
+ 2bc:	5b 12       	cpse	r5, r27
+ 2be:	09 c0       	rjmp	.+18     	; 0x2d2 <main+0xca>
+		{
+			PORTD=seconds;
+ 2c0:	80 91 63 00 	lds	r24, 0x0063	; 0x800063 <seconds>
+ 2c4:	82 bb       	out	0x12, r24	; 18
+			PORTC=minutes;
+ 2c6:	80 91 62 00 	lds	r24, 0x0062	; 0x800062 <minutes>
+ 2ca:	85 bb       	out	0x15, r24	; 21
+			PORTA=hours;
+ 2cc:	80 91 61 00 	lds	r24, 0x0061	; 0x800061 <hours>
+ 2d0:	8b bb       	out	0x1b, r24	; 27
+		}
+
+		key=GetKeyPressed();
+ 2d2:	0e 94 bf 00 	call	0x17e	; 0x17e <GetKeyPressed>
+		if (key == 0xFF )
+ 2d6:	8f 3f       	cpi	r24, 0xFF	; 255
+ 2d8:	09 f0       	breq	.+2      	; 0x2dc <main+0xd4>
+ 2da:	1a c1       	rjmp	.+564    	; 0x510 <__LOCK_REGION_LENGTH__+0x110>
+ 2dc:	ea cf       	rjmp	.-44     	; 0x2b2 <main+0xaa>
+		}
+		if(key!=0xFF && pressed == 0){
+			pressed = 1;
+			last_inputed_char = key;
+			//not logged or logged and no command
+			if ((pb7==0 && key!= 0x0C && key != 0x0A) || (key!= 0x0C && key != 0x0A))
+ 2de:	c1 10       	cpse	r12, r1
+ 2e0:	05 c0       	rjmp	.+10     	; 0x2ec <main+0xe4>
+ 2e2:	8c 30       	cpi	r24, 0x0C	; 12
+ 2e4:	09 f0       	breq	.+2      	; 0x2e8 <main+0xe0>
+ 2e6:	57 c1       	rjmp	.+686    	; 0x596 <__LOCK_REGION_LENGTH__+0x196>
+					//show_error();
+				}
+			}
+			else
+			{
+				last_inputed_char = EMPTY;
+ 2e8:	8e 2d       	mov	r24, r14
+ 2ea:	74 c0       	rjmp	.+232    	; 0x3d4 <main+0x1cc>
+		}
+		if(key!=0xFF && pressed == 0){
+			pressed = 1;
+			last_inputed_char = key;
+			//not logged or logged and no command
+			if ((pb7==0 && key!= 0x0C && key != 0x0A) || (key!= 0x0C && key != 0x0A))
+ 2ec:	8c 30       	cpi	r24, 0x0C	; 12
+ 2ee:	09 f4       	brne	.+2      	; 0x2f2 <main+0xea>
+ 2f0:	13 c1       	rjmp	.+550    	; 0x518 <__LOCK_REGION_LENGTH__+0x118>
+ 2f2:	8a 30       	cpi	r24, 0x0A	; 10
+ 2f4:	49 f0       	breq	.+18     	; 0x308 <main+0x100>
+			{
+				entered_password[indexEnteredPass] = key;
+ 2f6:	e9 e2       	ldi	r30, 0x29	; 41
+ 2f8:	f0 e0       	ldi	r31, 0x00	; 0
+ 2fa:	ec 0f       	add	r30, r28
+ 2fc:	fd 1f       	adc	r31, r29
+ 2fe:	e6 0d       	add	r30, r6
+ 300:	f1 1d       	adc	r31, r1
+ 302:	80 83       	st	Z, r24
+				indexEnteredPass++;
+ 304:	63 94       	inc	r6
+ 306:	66 c0       	rjmp	.+204    	; 0x3d4 <main+0x1cc>
+				//log_out = 0;
+			}
+			//show last login
+			else if (pb7==1 && key == 0x0C)
+ 308:	e1 e0       	ldi	r30, 0x01	; 1
+ 30a:	ce 16       	cp	r12, r30
+ 30c:	d9 f1       	breq	.+118    	; 0x384 <main+0x17c>
+					//show_error();
+				}
+			}
+			else
+			{
+				last_inputed_char = EMPTY;
+ 30e:	8e 2d       	mov	r24, r14
+ 310:	61 c0       	rjmp	.+194    	; 0x3d4 <main+0x1cc>
+				//log_out = 0;
+			}
+			//show last login
+			else if (pb7==1 && key == 0x0C)
+			{
+				if (addPassword == 1 )
+ 312:	f1 e0       	ldi	r31, 0x01	; 1
+ 314:	af 16       	cp	r10, r31
+ 316:	19 f0       	breq	.+6      	; 0x31e <main+0x116>
+					
+				}
+				else
+				{
+					last_inputed_char = EMPTY;
+					for (uint8_t j=0;j<accountCounts;j++)
+ 318:	f1 10       	cpse	r15, r1
+ 31a:	11 c0       	rjmp	.+34     	; 0x33e <main+0x136>
+ 31c:	0a c1       	rjmp	.+532    	; 0x532 <__LOCK_REGION_LENGTH__+0x132>
+			//show last login
+			else if (pb7==1 && key == 0x0C)
+			{
+				if (addPassword == 1 )
+				{
+					show_error();
+ 31e:	0e 94 f4 00 	call	0x1e8	; 0x1e8 <show_error>
+					PORTB &= 0 << 7;
+ 322:	88 b3       	in	r24, 0x18	; 24
+ 324:	18 ba       	out	0x18, r1	; 24
+ 326:	2f e9       	ldi	r18, 0x9F	; 159
+ 328:	36 e8       	ldi	r19, 0x86	; 134
+ 32a:	81 e0       	ldi	r24, 0x01	; 1
+ 32c:	21 50       	subi	r18, 0x01	; 1
+ 32e:	30 40       	sbci	r19, 0x00	; 0
+ 330:	80 40       	sbci	r24, 0x00	; 0
+ 332:	e1 f7       	brne	.-8      	; 0x32c <main+0x124>
+ 334:	00 c0       	rjmp	.+0      	; 0x336 <main+0x12e>
+ 336:	00 00       	nop
+					pb7 = 0;
+ 338:	cb 2c       	mov	r12, r11
+					//log_out = 0;
+					addPassword = 0;
+ 33a:	ab 2c       	mov	r10, r11
+ 33c:	fa c0       	rjmp	.+500    	; 0x532 <__LOCK_REGION_LENGTH__+0x132>
+ 33e:	fe 01       	movw	r30, r28
+ 340:	31 96       	adiw	r30, 0x01	; 1
+					
+				}
+				else
+				{
+					last_inputed_char = EMPTY;
+					for (uint8_t j=0;j<accountCounts;j++)
+ 342:	80 e0       	ldi	r24, 0x00	; 0
+					{
+						PORTA = j+1;
+ 344:	8f 5f       	subi	r24, 0xFF	; 255
+ 346:	8b bb       	out	0x1b, r24	; 27
+						PORTC = 0xAC;
+ 348:	75 ba       	out	0x15, r7	; 21
+						PORTD = 0xCC;
+ 34a:	82 ba       	out	0x12, r8	; 18
+ 34c:	9f e3       	ldi	r25, 0x3F	; 63
+ 34e:	ad e0       	ldi	r26, 0x0D	; 13
+ 350:	b3 e0       	ldi	r27, 0x03	; 3
+ 352:	91 50       	subi	r25, 0x01	; 1
+ 354:	a0 40       	sbci	r26, 0x00	; 0
+ 356:	b0 40       	sbci	r27, 0x00	; 0
+ 358:	e1 f7       	brne	.-8      	; 0x352 <main+0x14a>
+ 35a:	00 c0       	rjmp	.+0      	; 0x35c <main+0x154>
+ 35c:	00 00       	nop
+						_delay_ms(1000);
+						PORTD = logins[j][0];
+ 35e:	90 81       	ld	r25, Z
+ 360:	92 bb       	out	0x12, r25	; 18
+						PORTC = logins[j][1];
+ 362:	91 81       	ldd	r25, Z+1	; 0x01
+ 364:	95 bb       	out	0x15, r25	; 21
+						PORTA = logins[j][2];	
+ 366:	92 81       	ldd	r25, Z+2	; 0x02
+ 368:	9b bb       	out	0x1b, r25	; 27
+ 36a:	2f e3       	ldi	r18, 0x3F	; 63
+ 36c:	3d e0       	ldi	r19, 0x0D	; 13
+ 36e:	93 e0       	ldi	r25, 0x03	; 3
+ 370:	21 50       	subi	r18, 0x01	; 1
+ 372:	30 40       	sbci	r19, 0x00	; 0
+ 374:	90 40       	sbci	r25, 0x00	; 0
+ 376:	e1 f7       	brne	.-8      	; 0x370 <main+0x168>
+ 378:	00 c0       	rjmp	.+0      	; 0x37a <main+0x172>
+ 37a:	00 00       	nop
+ 37c:	34 96       	adiw	r30, 0x04	; 4
+					
+				}
+				else
+				{
+					last_inputed_char = EMPTY;
+					for (uint8_t j=0;j<accountCounts;j++)
+ 37e:	f8 12       	cpse	r15, r24
+ 380:	e1 cf       	rjmp	.-62     	; 0x344 <main+0x13c>
+ 382:	d7 c0       	rjmp	.+430    	; 0x532 <__LOCK_REGION_LENGTH__+0x132>
+			}
+			//add password
+			else if (pb7==1 && key == 0x0A)
+			{
+				
+				if (accountCounts < ACCOUNT_COUNT)
+ 384:	a4 e0       	ldi	r26, 0x04	; 4
+ 386:	af 15       	cp	r26, r15
+ 388:	d8 f0       	brcs	.+54     	; 0x3c0 <main+0x1b8>
+ 38a:	bf e9       	ldi	r27, 0x9F	; 159
+ 38c:	e6 e8       	ldi	r30, 0x86	; 134
+ 38e:	f1 e0       	ldi	r31, 0x01	; 1
+ 390:	b1 50       	subi	r27, 0x01	; 1
+ 392:	e0 40       	sbci	r30, 0x00	; 0
+ 394:	f0 40       	sbci	r31, 0x00	; 0
+ 396:	e1 f7       	brne	.-8      	; 0x390 <main+0x188>
+ 398:	00 c0       	rjmp	.+0      	; 0x39a <main+0x192>
+ 39a:	00 00       	nop
+				last_inputed_char = EMPTY;
+			}
+			
+			
+			//show inputed chars
+			switch (indexEnteredPass){
+ 39c:	22 e0       	ldi	r18, 0x02	; 2
+ 39e:	62 16       	cp	r6, r18
+ 3a0:	e1 f1       	breq	.+120    	; 0x41a <__LOCK_REGION_LENGTH__+0x1a>
+ 3a2:	26 15       	cp	r18, r6
+ 3a4:	28 f0       	brcs	.+10     	; 0x3b0 <main+0x1a8>
+ 3a6:	31 e0       	ldi	r19, 0x01	; 1
+ 3a8:	63 16       	cp	r6, r19
+ 3aa:	09 f4       	brne	.+2      	; 0x3ae <main+0x1a6>
+ 3ac:	bb c0       	rjmp	.+374    	; 0x524 <__LOCK_REGION_LENGTH__+0x124>
+ 3ae:	54 c0       	rjmp	.+168    	; 0x458 <__LOCK_REGION_LENGTH__+0x58>
+ 3b0:	93 e0       	ldi	r25, 0x03	; 3
+ 3b2:	69 16       	cp	r6, r25
+ 3b4:	e9 f1       	breq	.+122    	; 0x430 <__LOCK_REGION_LENGTH__+0x30>
+ 3b6:	a4 e0       	ldi	r26, 0x04	; 4
+ 3b8:	6a 16       	cp	r6, r26
+ 3ba:	09 f4       	brne	.+2      	; 0x3be <main+0x1b6>
+ 3bc:	46 c0       	rjmp	.+140    	; 0x44a <__LOCK_REGION_LENGTH__+0x4a>
+ 3be:	4c c0       	rjmp	.+152    	; 0x458 <__LOCK_REGION_LENGTH__+0x58>
+ 3c0:	bf e9       	ldi	r27, 0x9F	; 159
+ 3c2:	e6 e8       	ldi	r30, 0x86	; 134
+ 3c4:	f1 e0       	ldi	r31, 0x01	; 1
+ 3c6:	b1 50       	subi	r27, 0x01	; 1
+ 3c8:	e0 40       	sbci	r30, 0x00	; 0
+ 3ca:	f0 40       	sbci	r31, 0x00	; 0
+ 3cc:	e1 f7       	brne	.-8      	; 0x3c6 <main+0x1be>
+ 3ce:	00 c0       	rjmp	.+0      	; 0x3d0 <main+0x1c8>
+ 3d0:	00 00       	nop
+					
+				}
+				else
+				{
+					//log_out = 1;
+					last_inputed_char = EMPTY;
+ 3d2:	8e 2d       	mov	r24, r14
+				last_inputed_char = EMPTY;
+			}
+			
+			
+			//show inputed chars
+			switch (indexEnteredPass){
+ 3d4:	22 e0       	ldi	r18, 0x02	; 2
+ 3d6:	62 16       	cp	r6, r18
+ 3d8:	19 f1       	breq	.+70     	; 0x420 <__LOCK_REGION_LENGTH__+0x20>
+ 3da:	26 15       	cp	r18, r6
+ 3dc:	20 f0       	brcs	.+8      	; 0x3e6 <main+0x1de>
+ 3de:	31 e0       	ldi	r19, 0x01	; 1
+ 3e0:	63 16       	cp	r6, r19
+ 3e2:	41 f0       	breq	.+16     	; 0x3f4 <main+0x1ec>
+ 3e4:	3c c0       	rjmp	.+120    	; 0x45e <__LOCK_REGION_LENGTH__+0x5e>
+ 3e6:	93 e0       	ldi	r25, 0x03	; 3
+ 3e8:	69 16       	cp	r6, r25
+ 3ea:	29 f1       	breq	.+74     	; 0x436 <__LOCK_REGION_LENGTH__+0x36>
+ 3ec:	a4 e0       	ldi	r26, 0x04	; 4
+ 3ee:	6a 16       	cp	r6, r26
+ 3f0:	79 f1       	breq	.+94     	; 0x450 <__LOCK_REGION_LENGTH__+0x50>
+ 3f2:	35 c0       	rjmp	.+106    	; 0x45e <__LOCK_REGION_LENGTH__+0x5e>
+				
+				case 1:
+				PORTA = 0;
+ 3f4:	1b ba       	out	0x1b, r1	; 27
+				PORTC = 0;
+ 3f6:	15 ba       	out	0x15, r1	; 21
+				if (addPassword == 1)
+ 3f8:	b1 e0       	ldi	r27, 0x01	; 1
+ 3fa:	ab 12       	cpse	r10, r27
+ 3fc:	05 c0       	rjmp	.+10     	; 0x408 <__LOCK_REGION_LENGTH__+0x8>
+				{
+					PORTD = 0xAD;
+ 3fe:	9d ea       	ldi	r25, 0xAD	; 173
+ 400:	92 bb       	out	0x12, r25	; 18
+ 402:	58 2e       	mov	r5, r24
+ 404:	ad 2c       	mov	r10, r13
+ 406:	02 c0       	rjmp	.+4      	; 0x40c <__LOCK_REGION_LENGTH__+0xc>
+				}
+				else 
+				{
+					PORTD = 0xCD;
+ 408:	92 ba       	out	0x12, r9	; 18
+ 40a:	58 2e       	mov	r5, r24
+				}
+				
+				PORTA = last_inputed_char<<4;
+ 40c:	85 2d       	mov	r24, r5
+ 40e:	82 95       	swap	r24
+ 410:	80 7f       	andi	r24, 0xF0	; 240
+ 412:	8b bb       	out	0x1b, r24	; 27
+				break;
+ 414:	66 24       	eor	r6, r6
+ 416:	63 94       	inc	r6
+ 418:	9f c0       	rjmp	.+318    	; 0x558 <__LOCK_REGION_LENGTH__+0x158>
+			{
+				
+				if (accountCounts < ACCOUNT_COUNT)
+				{
+					//log_out = 1	;
+					addPassword = 1;
+ 41a:	ad 2c       	mov	r10, r13
+ 41c:	01 c0       	rjmp	.+2      	; 0x420 <__LOCK_REGION_LENGTH__+0x20>
+				last_inputed_char = EMPTY;
+			}
+			
+			
+			//show inputed chars
+			switch (indexEnteredPass){
+ 41e:	8e 2d       	mov	r24, r14
+				
+				PORTA = last_inputed_char<<4;
+				break;
+				
+				case 2:
+				PORTA |= last_inputed_char;
+ 420:	9b b3       	in	r25, 0x1b	; 27
+ 422:	98 2b       	or	r25, r24
+ 424:	9b bb       	out	0x1b, r25	; 27
+				break;
+ 426:	58 2e       	mov	r5, r24
+ 428:	68 94       	set
+ 42a:	66 24       	eor	r6, r6
+ 42c:	61 f8       	bld	r6, 1
+ 42e:	94 c0       	rjmp	.+296    	; 0x558 <__LOCK_REGION_LENGTH__+0x158>
+			{
+				
+				if (accountCounts < ACCOUNT_COUNT)
+				{
+					//log_out = 1	;
+					addPassword = 1;
+ 430:	ad 2c       	mov	r10, r13
+ 432:	01 c0       	rjmp	.+2      	; 0x436 <__LOCK_REGION_LENGTH__+0x36>
+				last_inputed_char = EMPTY;
+			}
+			
+			
+			//show inputed chars
+			switch (indexEnteredPass){
+ 434:	8e 2d       	mov	r24, r14
+				case 2:
+				PORTA |= last_inputed_char;
+				break;
+				
+				case 3:
+				PORTC = last_inputed_char<<4;
+ 436:	98 2f       	mov	r25, r24
+ 438:	92 95       	swap	r25
+ 43a:	90 7f       	andi	r25, 0xF0	; 240
+ 43c:	95 bb       	out	0x15, r25	; 21
+				break;
+ 43e:	58 2e       	mov	r5, r24
+ 440:	0f 2e       	mov	r0, r31
+ 442:	f3 e0       	ldi	r31, 0x03	; 3
+ 444:	6f 2e       	mov	r6, r31
+ 446:	f0 2d       	mov	r31, r0
+ 448:	87 c0       	rjmp	.+270    	; 0x558 <__LOCK_REGION_LENGTH__+0x158>
+			{
+				
+				if (accountCounts < ACCOUNT_COUNT)
+				{
+					//log_out = 1	;
+					addPassword = 1;
+ 44a:	ad 2c       	mov	r10, r13
+ 44c:	01 c0       	rjmp	.+2      	; 0x450 <__LOCK_REGION_LENGTH__+0x50>
+				last_inputed_char = EMPTY;
+			}
+			
+			
+			//show inputed chars
+			switch (indexEnteredPass){
+ 44e:	8e 2d       	mov	r24, r14
+				case 3:
+				PORTC = last_inputed_char<<4;
+				break;
+				
+				case 4:
+				PORTC |= last_inputed_char;
+ 450:	95 b3       	in	r25, 0x15	; 21
+ 452:	89 2b       	or	r24, r25
+ 454:	85 bb       	out	0x15, r24	; 21
+ 456:	06 c0       	rjmp	.+12     	; 0x464 <__LOCK_REGION_LENGTH__+0x64>
+			{
+				
+				if (accountCounts < ACCOUNT_COUNT)
+				{
+					//log_out = 1	;
+					addPassword = 1;
+ 458:	ad 2c       	mov	r10, r13
+ 45a:	01 c0       	rjmp	.+2      	; 0x45e <__LOCK_REGION_LENGTH__+0x5e>
+				last_inputed_char = EMPTY;
+			}
+			
+			
+			//show inputed chars
+			switch (indexEnteredPass){
+ 45c:	8e 2d       	mov	r24, r14
+				break;
+				
+			}
+			
+			//4 digits entered
+			if (indexEnteredPass == 4)
+ 45e:	e4 e0       	ldi	r30, 0x04	; 4
+ 460:	6e 12       	cpse	r6, r30
+ 462:	29 cf       	rjmp	.-430    	; 0x2b6 <main+0xae>
+			{
+				//adding a password
+				if (addPassword == 1)
+ 464:	f1 e0       	ldi	r31, 0x01	; 1
+ 466:	af 16       	cp	r10, r31
+ 468:	19 f0       	breq	.+6      	; 0x470 <__LOCK_REGION_LENGTH__+0x70>
+					//log_out = 0;
+				}
+				else
+				{
+					//checking a password
+					for(uint8_t i=0; i<accountCounts;i++)
+ 46a:	f1 10       	cpse	r15, r1
+ 46c:	2a c0       	rjmp	.+84     	; 0x4c2 <__LOCK_REGION_LENGTH__+0xc2>
+ 46e:	36 c0       	rjmp	.+108    	; 0x4dc <__LOCK_REGION_LENGTH__+0xdc>
+ 470:	de 01       	movw	r26, r28
+ 472:	99 96       	adiw	r26, 0x29	; 41
+ 474:	ef 2d       	mov	r30, r15
+ 476:	f0 e0       	ldi	r31, 0x00	; 0
+ 478:	ee 0f       	add	r30, r30
+ 47a:	ff 1f       	adc	r31, r31
+ 47c:	ee 0f       	add	r30, r30
+ 47e:	ff 1f       	adc	r31, r31
+ 480:	85 e1       	ldi	r24, 0x15	; 21
+ 482:	90 e0       	ldi	r25, 0x00	; 0
+ 484:	8c 0f       	add	r24, r28
+ 486:	9d 1f       	adc	r25, r29
+ 488:	8e 0f       	add	r24, r30
+ 48a:	9f 1f       	adc	r25, r31
+ 48c:	41 e0       	ldi	r20, 0x01	; 1
+ 48e:	50 e0       	ldi	r21, 0x00	; 0
+ 490:	4c 0f       	add	r20, r28
+ 492:	5d 1f       	adc	r21, r29
+ 494:	4e 0f       	add	r20, r30
+ 496:	5f 1f       	adc	r21, r31
+				//adding a password
+				if (addPassword == 1)
+				{
+					for(uint8_t j =0; j<4; j++)
+					{
+						passwords[accountCounts][j] = entered_password[j];
+ 498:	2d 91       	ld	r18, X+
+ 49a:	fc 01       	movw	r30, r24
+ 49c:	21 93       	st	Z+, r18
+ 49e:	cf 01       	movw	r24, r30
+						logins[accountCounts][j] = 0;
+ 4a0:	fa 01       	movw	r30, r20
+ 4a2:	11 92       	st	Z+, r1
+ 4a4:	af 01       	movw	r20, r30
+			if (indexEnteredPass == 4)
+			{
+				//adding a password
+				if (addPassword == 1)
+				{
+					for(uint8_t j =0; j<4; j++)
+ 4a6:	a0 17       	cp	r26, r16
+ 4a8:	b1 07       	cpc	r27, r17
+ 4aa:	b1 f7       	brne	.-20     	; 0x498 <__LOCK_REGION_LENGTH__+0x98>
+					{
+						passwords[accountCounts][j] = entered_password[j];
+						logins[accountCounts][j] = 0;
+					}
+					accountCounts++;
+ 4ac:	f3 94       	inc	r15
+					addPassword = 0;
+ 4ae:	ab 2c       	mov	r10, r11
+ 4b0:	1e c0       	rjmp	.+60     	; 0x4ee <__LOCK_REGION_LENGTH__+0xee>
+					for(uint8_t i=0; i<accountCounts;i++)
+					{
+						isPasswordTrue = 1;
+						for(uint8_t j =0; j<4; j++)
+						{
+							if(passwords[i][j] != entered_password[j])
+ 4b2:	9d 91       	ld	r25, X+
+ 4b4:	81 91       	ld	r24, Z+
+ 4b6:	98 13       	cpse	r25, r24
+ 4b8:	67 c0       	rjmp	.+206    	; 0x588 <__LOCK_REGION_LENGTH__+0x188>
+				{
+					//checking a password
+					for(uint8_t i=0; i<accountCounts;i++)
+					{
+						isPasswordTrue = 1;
+						for(uint8_t j =0; j<4; j++)
+ 4ba:	0e 17       	cp	r16, r30
+ 4bc:	1f 07       	cpc	r17, r31
+ 4be:	c9 f7       	brne	.-14     	; 0x4b2 <__LOCK_REGION_LENGTH__+0xb2>
+ 4c0:	4d c0       	rjmp	.+154    	; 0x55c <__LOCK_REGION_LENGTH__+0x15c>
+						{
+							if(passwords[i][j] != entered_password[j])
+ 4c2:	59 a5       	ldd	r21, Y+41	; 0x29
+ 4c4:	9e 01       	movw	r18, r28
+ 4c6:	2b 5e       	subi	r18, 0xEB	; 235
+ 4c8:	3f 4f       	sbci	r19, 0xFF	; 255
+ 4ca:	40 e0       	ldi	r20, 0x00	; 0
+ 4cc:	d9 01       	movw	r26, r18
+ 4ce:	8c 91       	ld	r24, X
+ 4d0:	85 13       	cpse	r24, r21
+ 4d2:	5a c0       	rjmp	.+180    	; 0x588 <__LOCK_REGION_LENGTH__+0x188>
+ 4d4:	11 96       	adiw	r26, 0x01	; 1
+ 4d6:	fe 01       	movw	r30, r28
+ 4d8:	ba 96       	adiw	r30, 0x2a	; 42
+ 4da:	eb cf       	rjmp	.-42     	; 0x4b2 <__LOCK_REGION_LENGTH__+0xb2>
+							break;
+						}
+					
+					}
+				
+					if (isPasswordTrue == 1)
+ 4dc:	b1 e0       	ldi	r27, 0x01	; 1
+ 4de:	4b 12       	cpse	r4, r27
+ 4e0:	04 c0       	rjmp	.+8      	; 0x4ea <__LOCK_REGION_LENGTH__+0xea>
+					{
+					
+						PORTB |= 1 << 7;
+ 4e2:	c7 9a       	sbi	0x18, 7	; 24
+						pb7 = 1;
+ 4e4:	cd 2c       	mov	r12, r13
+ 4e6:	4d 2c       	mov	r4, r13
+ 4e8:	02 c0       	rjmp	.+4      	; 0x4ee <__LOCK_REGION_LENGTH__+0xee>
+					}
+					else
+					{
+						show_error();
+ 4ea:	0e 94 f4 00 	call	0x1e8	; 0x1e8 <show_error>
+ 4ee:	ef e9       	ldi	r30, 0x9F	; 159
+ 4f0:	f6 e8       	ldi	r31, 0x86	; 134
+ 4f2:	21 e0       	ldi	r18, 0x01	; 1
+ 4f4:	e1 50       	subi	r30, 0x01	; 1
+ 4f6:	f0 40       	sbci	r31, 0x00	; 0
+ 4f8:	20 40       	sbci	r18, 0x00	; 0
+ 4fa:	e1 f7       	brne	.-8      	; 0x4f4 <__LOCK_REGION_LENGTH__+0xf4>
+ 4fc:	00 c0       	rjmp	.+0      	; 0x4fe <__LOCK_REGION_LENGTH__+0xfe>
+ 4fe:	00 00       	nop
+				}
+				//wait and set back everything
+				_delay_ms(500);
+				last_inputed_char = EMPTY;
+				indexEnteredPass = 0;
+				entered_password[0] = EMPTY;
+ 500:	e9 a6       	std	Y+41, r14	; 0x29
+				entered_password[1] = EMPTY;
+ 502:	ea a6       	std	Y+42, r14	; 0x2a
+				entered_password[2] = EMPTY;
+ 504:	eb a6       	std	Y+43, r14	; 0x2b
+				entered_password[3] = EMPTY;
+ 506:	ec a6       	std	Y+44, r14	; 0x2c
+						show_error();
+					}
+				}
+				//wait and set back everything
+				_delay_ms(500);
+				last_inputed_char = EMPTY;
+ 508:	5e 2c       	mov	r5, r14
+				indexEnteredPass = 0;
+ 50a:	61 2c       	mov	r6, r1
+		if (key == 0xFF )
+		{
+			pressed = 0;
+		}
+		if(key!=0xFF && pressed == 0){
+			pressed = 1;
+ 50c:	3d 2c       	mov	r3, r13
+ 50e:	d5 ce       	rjmp	.-598    	; 0x2ba <main+0xb2>
+		key=GetKeyPressed();
+		if (key == 0xFF )
+		{
+			pressed = 0;
+		}
+		if(key!=0xFF && pressed == 0){
+ 510:	33 20       	and	r3, r3
+ 512:	09 f4       	brne	.+2      	; 0x516 <__LOCK_REGION_LENGTH__+0x116>
+ 514:	e4 ce       	rjmp	.-568    	; 0x2de <main+0xd6>
+ 516:	d1 ce       	rjmp	.-606    	; 0x2ba <main+0xb2>
+				entered_password[indexEnteredPass] = key;
+				indexEnteredPass++;
+				//log_out = 0;
+			}
+			//show last login
+			else if (pb7==1 && key == 0x0C)
+ 518:	31 e0       	ldi	r19, 0x01	; 1
+ 51a:	c3 16       	cp	r12, r19
+ 51c:	09 f4       	brne	.+2      	; 0x520 <__LOCK_REGION_LENGTH__+0x120>
+ 51e:	f9 ce       	rjmp	.-526    	; 0x312 <main+0x10a>
+					//show_error();
+				}
+			}
+			else
+			{
+				last_inputed_char = EMPTY;
+ 520:	8e 2d       	mov	r24, r14
+ 522:	58 cf       	rjmp	.-336    	; 0x3d4 <main+0x1cc>
+			
+			//show inputed chars
+			switch (indexEnteredPass){
+				
+				case 1:
+				PORTA = 0;
+ 524:	1b ba       	out	0x1b, r1	; 27
+				PORTC = 0;
+ 526:	15 ba       	out	0x15, r1	; 21
+ 528:	6a cf       	rjmp	.-300    	; 0x3fe <main+0x1f6>
+			
+			//show inputed chars
+			switch (indexEnteredPass){
+				
+				case 1:
+				PORTA = 0;
+ 52a:	1b ba       	out	0x1b, r1	; 27
+				PORTC = 0;
+ 52c:	15 ba       	out	0x15, r1	; 21
+ 52e:	8e 2d       	mov	r24, r14
+ 530:	6b cf       	rjmp	.-298    	; 0x408 <__LOCK_REGION_LENGTH__+0x8>
+				last_inputed_char = EMPTY;
+			}
+			
+			
+			//show inputed chars
+			switch (indexEnteredPass){
+ 532:	82 e0       	ldi	r24, 0x02	; 2
+ 534:	68 16       	cp	r6, r24
+ 536:	09 f4       	brne	.+2      	; 0x53a <__LOCK_REGION_LENGTH__+0x13a>
+ 538:	72 cf       	rjmp	.-284    	; 0x41e <__LOCK_REGION_LENGTH__+0x1e>
+ 53a:	86 15       	cp	r24, r6
+ 53c:	20 f0       	brcs	.+8      	; 0x546 <__LOCK_REGION_LENGTH__+0x146>
+ 53e:	91 e0       	ldi	r25, 0x01	; 1
+ 540:	69 16       	cp	r6, r25
+ 542:	99 f3       	breq	.-26     	; 0x52a <__LOCK_REGION_LENGTH__+0x12a>
+ 544:	8b cf       	rjmp	.-234    	; 0x45c <__LOCK_REGION_LENGTH__+0x5c>
+ 546:	a3 e0       	ldi	r26, 0x03	; 3
+ 548:	6a 16       	cp	r6, r26
+ 54a:	09 f4       	brne	.+2      	; 0x54e <__LOCK_REGION_LENGTH__+0x14e>
+ 54c:	73 cf       	rjmp	.-282    	; 0x434 <__LOCK_REGION_LENGTH__+0x34>
+ 54e:	b4 e0       	ldi	r27, 0x04	; 4
+ 550:	6b 16       	cp	r6, r27
+ 552:	09 f4       	brne	.+2      	; 0x556 <__LOCK_REGION_LENGTH__+0x156>
+ 554:	7c cf       	rjmp	.-264    	; 0x44e <__LOCK_REGION_LENGTH__+0x4e>
+ 556:	82 cf       	rjmp	.-252    	; 0x45c <__LOCK_REGION_LENGTH__+0x5c>
+		if (key == 0xFF )
+		{
+			pressed = 0;
+		}
+		if(key!=0xFF && pressed == 0){
+			pressed = 1;
+ 558:	3d 2c       	mov	r3, r13
+ 55a:	af ce       	rjmp	.-674    	; 0x2ba <main+0xb2>
+						
+						}
+						if (isPasswordTrue == 1)
+						{
+							//logged_user = i;
+							logins[i][0] = seconds;
+ 55c:	80 91 63 00 	lds	r24, 0x0063	; 0x800063 <seconds>
+ 560:	e1 e0       	ldi	r30, 0x01	; 1
+ 562:	f0 e0       	ldi	r31, 0x00	; 0
+ 564:	ec 0f       	add	r30, r28
+ 566:	fd 1f       	adc	r31, r29
+ 568:	24 e0       	ldi	r18, 0x04	; 4
+ 56a:	42 9f       	mul	r20, r18
+ 56c:	e0 0d       	add	r30, r0
+ 56e:	f1 1d       	adc	r31, r1
+ 570:	11 24       	eor	r1, r1
+ 572:	80 83       	st	Z, r24
+							logins[i][1] = minutes;
+ 574:	80 91 62 00 	lds	r24, 0x0062	; 0x800062 <minutes>
+ 578:	81 83       	std	Z+1, r24	; 0x01
+							logins[i][2] = hours;
+ 57a:	80 91 61 00 	lds	r24, 0x0061	; 0x800061 <hours>
+ 57e:	82 83       	std	Z+2, r24	; 0x02
+							logins[i][3]++;
+ 580:	83 81       	ldd	r24, Z+3	; 0x03
+ 582:	8f 5f       	subi	r24, 0xFF	; 255
+ 584:	83 83       	std	Z+3, r24	; 0x03
+ 586:	ad cf       	rjmp	.-166    	; 0x4e2 <__LOCK_REGION_LENGTH__+0xe2>
+					//log_out = 0;
+				}
+				else
+				{
+					//checking a password
+					for(uint8_t i=0; i<accountCounts;i++)
+ 588:	4f 5f       	subi	r20, 0xFF	; 255
+ 58a:	2c 5f       	subi	r18, 0xFC	; 252
+ 58c:	3f 4f       	sbci	r19, 0xFF	; 255
+ 58e:	f4 12       	cpse	r15, r20
+ 590:	9d cf       	rjmp	.-198    	; 0x4cc <__LOCK_REGION_LENGTH__+0xcc>
+ 592:	4b 2c       	mov	r4, r11
+ 594:	aa cf       	rjmp	.-172    	; 0x4ea <__LOCK_REGION_LENGTH__+0xea>
+		}
+		if(key!=0xFF && pressed == 0){
+			pressed = 1;
+			last_inputed_char = key;
+			//not logged or logged and no command
+			if ((pb7==0 && key!= 0x0C && key != 0x0A) || (key!= 0x0C && key != 0x0A))
+ 596:	8a 30       	cpi	r24, 0x0A	; 10
+ 598:	09 f0       	breq	.+2      	; 0x59c <__LOCK_REGION_LENGTH__+0x19c>
+ 59a:	ad ce       	rjmp	.-678    	; 0x2f6 <main+0xee>
+					//show_error();
+				}
+			}
+			else
+			{
+				last_inputed_char = EMPTY;
+ 59c:	8e 2d       	mov	r24, r14
+ 59e:	1a cf       	rjmp	.-460    	; 0x3d4 <main+0x1cc>
+
+000005a0 <_exit>:
+ 5a0:	f8 94       	cli
+
+000005a2 <__stop_program>:
+ 5a2:	ff cf       	rjmp	.-2      	; 0x5a2 <__stop_program>
